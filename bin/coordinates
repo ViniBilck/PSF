@@ -2,9 +2,8 @@ import argparse
 from psf.psf import PSF
 
 def main(file_name, stars_coordinates):
-   text = PSF(file_name, stars_coordinates).get_stars_coordinates()
-   print(text)
-   print(type(text))
+   text = PSF(file_name, stars_coordinates)
+   print(text.stars_coordinates)
 
 
 if __name__ == '__main__':
