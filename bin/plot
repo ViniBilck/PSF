@@ -2,7 +2,10 @@ import argparse
 from psf.psf import PSF
 
 def main(file_name, stars_coordinates):
-    PSF(file_name, stars_coordinates).do_psf()
+   graph = PSF(file_name, stars_coordinates)
+   #graph.get_stars_plot()
+   #graph.get_file_plot()
+   graph.get_residuals_plot()
 
 
 if __name__ == '__main__':
