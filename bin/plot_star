@@ -2,8 +2,9 @@ import argparse
 from psf.psf import PSF
 
 def main(file_name, stars_coordinates):
-    #PSF(file_name, stars_coordinates).do_psf()
-    PSF(file_name, stars_coordinates).do_averaging()
+   graph = PSF(file_name, stars_coordinates)
+   graph.get_stars_plot()
+
 
 
 if __name__ == '__main__':
