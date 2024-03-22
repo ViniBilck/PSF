@@ -3,7 +3,8 @@ from psf.psf import PSF
 
 def main(file_name, stars_coordinates):
     #PSF(file_name, stars_coordinates).do_psf()
-    PSF(file_name, stars_coordinates).do_averaging()
+    #PSF(file_name, stars_coordinates).do_averaging()
+    PSF(file_name, stars_coordinates).do_norm()
 
 
 if __name__ == '__main__':

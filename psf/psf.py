@@ -65,11 +65,21 @@ class PSF(object):
             count += 1
         plt.show()
 
-    def do_averaging(self):
+    def do_averaging(self, plot=False):
         get_psf = self.do_psf()
         all_psf = np.array([psf[0] for psf in get_psf])
         print(np.sum(all_psf))
-        plt.imshow(np.mean(all_psf, axis=0), origin="lower")
-        plt.show()
+        average = np.mean(all_psf, axis=0)
+        if plot:
+            plt.imshow(average, origin="lower")
+            plt.show()
+        return average
 
-
+    def do_norm(self, plot=True):
+        get_average = self.do_averaging()
+        norm_const = 1/np.max(get_average)
+        norm = get_average * norm_const
+        if plot:
+            plt.imshow(norm, origin="lower")
+            plt.show()
+        return norm
