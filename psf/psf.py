@@ -69,7 +69,7 @@ class PSF(object):
         get_psf = self.do_psf()
         all_psf = np.array([psf[0] for psf in get_psf])
         print(np.sum(all_psf))
-        plt.imshow(np.mean(all_psf, axis=0))
+        plt.imshow(np.mean(all_psf, axis=0), origin="lower")
         plt.show()
 
 
