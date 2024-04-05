@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from astropy.io import fits
+import copy
 from astropy.modeling import models, fitting
 
 
@@ -9,6 +10,15 @@ def get_stars_coordinates(star_coordinates_file: str) -> list[list[str]]:
         coordinates = [line.strip() for line in coordinate_list]
         points = [point.split(",") for point in coordinates]
     return points
+
+
+def roll_circular(boolean_condition_matrix, radius):
+    z = copy.deepcopy(boolean_condition_matrix)
+    for i in range(-radius, radius + 1):
+        for j in range(-radius, radius + 1):
+            if i ** 2 + j ** 2 <= radius ** 2:
+                z |= np.roll(boolean_condition_matrix, (i, j), axis=(0, 1))
+    return z
 
 
 class PSF(object):
@@ -77,9 +87,20 @@ class PSF(object):
 
     def do_norm(self, plot=True):
         get_average = self.do_averaging()
-        norm_const = 1/np.max(get_average)
+        norm_const = 1 / np.max(get_average)
         norm = get_average * norm_const
         if plot:
             plt.imshow(norm, origin="lower")
             plt.show()
         return norm
+
+    def find_saturated_stars(self, condition, radius, plot=True, vmax=0.7):
+        data = self.galaxy_file_data
+        bool_matrix = (data > condition)
+        mask_matrix = roll_circular(bool_matrix, radius)
+        if plot:
+            fig, axs = plt.subplots(1, 2, figsize=(9, 3), sharey=True)
+            axs[0].imshow(mask_matrix, origin="lower")
+            axs[1].imshow(data*(~mask_matrix), vmax=vmax, origin="lower")
+            plt.show()
+        return mask_matrix

@@ -1,0 +1,16 @@
+import argparse
+from psf.psf import PSF
+
+def main(file_name, stars_coordinates):
+   graph = PSF(file_name, stars_coordinates)
+   graph.find_saturated_stars(140, 90)
+
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("file_name", help="Data file.")
+    parser.add_argument("stars_coordinates", help="Data file.")
+
+    args = parser.parse_args()
+    main(args.file_name, args.stars_coordinates)

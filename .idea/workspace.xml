@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="0ad78929-fd3d-4b68-ab1c-9ee6277cf1b7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/createPSF" beforeDir="false" afterPath="$PROJECT_DIR$/bin/createPSF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/psf/psf.py" beforeDir="false" afterPath="$PROJECT_DIR$/psf/psf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +52,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/net/ASTRO/vinibilck/Documents/PSF",
+    "last_opened_file_path": "/net/ASTRO/vinibilck/Documents/PSF/bin",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
