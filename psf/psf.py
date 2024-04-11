@@ -1,31 +1,17 @@
+from psf.static import *
 import matplotlib.pyplot as plt
-import numpy as np
 from astropy.io import fits
-import copy
 from astropy.modeling import models, fitting
 
 
-def get_stars_coordinates(star_coordinates_file: str) -> list[list[str]]:
-    with open(star_coordinates_file) as coordinate_list:
-        coordinates = [line.strip() for line in coordinate_list]
-        points = [point.split(",") for point in coordinates]
-    return points
-
-
-def roll_circular(boolean_condition_matrix, radius):
-    z = copy.deepcopy(boolean_condition_matrix)
-    for i in range(-radius, radius + 1):
-        for j in range(-radius, radius + 1):
-            if i ** 2 + j ** 2 <= radius ** 2:
-                z |= np.roll(boolean_condition_matrix, (i, j), axis=(0, 1))
-    return z
-
-
 class PSF(object):
-    def __init__(self, galaxy_file: str, stars_coordinates_file: str, delta_axes: int = 20):
+    def __init__(self, galaxy_file: str, stars_coordinates_file: str = '', delta_axes: int = 20):
         self.delta_axes = delta_axes
         self.galaxy_file_data = fits.getdata(galaxy_file)
-        self.stars_coordinates = get_stars_coordinates(stars_coordinates_file)
+        if stars_coordinates_file:
+            self.stars_coordinates = get_stars_coordinates(stars_coordinates_file)
+        else:
+            pass
 
     def get_stars(self):
         stars_data = []
@@ -94,13 +80,29 @@ class PSF(object):
             plt.show()
         return norm
 
-    def find_saturated_stars(self, condition, radius, plot=True, vmax=0.7):
-        data = self.galaxy_file_data
-        bool_matrix = (data > condition)
-        mask_matrix = roll_circular(bool_matrix, radius)
+    def find_saturated_stars(self, condition_saturation: float, exclusion_radius: float, plot=True, vmax=0.7):
+        bool_matrix = (self.galaxy_file_data > condition_saturation)
+        mask_matrix = roll_circular(bool_matrix, exclusion_radius)
         if plot:
             fig, axs = plt.subplots(1, 2, figsize=(9, 3), sharey=True)
             axs[0].imshow(mask_matrix, origin="lower")
-            axs[1].imshow(data*(~mask_matrix), vmax=vmax, origin="lower")
+            axs[1].imshow(self.galaxy_file_data * (~mask_matrix), vmax=vmax, origin="lower")
             plt.show()
         return mask_matrix
+
+    def remove_galaxy_mask(self, galaxy_coord: tuple, pixel_size=19):
+        mask = np.full(self.galaxy_file_data.shape[:2], False)
+        y, x = galaxy_coord
+        mask[x - pixel_size:x + pixel_size, y - pixel_size:y + pixel_size] = True
+        return mask
+
+    def remove_saturated_objects(self, galaxy_coord: tuple, pixel_size: int, condition_saturation: float,
+                                 exclusion_radius: float, plot=True):
+        saturated_stars = self.find_saturated_stars(condition_saturation, exclusion_radius, plot=False)
+        mask = self.remove_galaxy_mask(galaxy_coord, pixel_size=pixel_size)
+        new_data = self.galaxy_file_data * (~saturated_stars) * (~mask)
+        if plot:
+            fig, axs = plt.subplots(1, 1, figsize=(9, 3), sharey=True)
+            axs.imshow(new_data, origin="lower", vmax=0.7)
+            plt.show()
+        return new_data

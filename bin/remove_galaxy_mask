@@ -2,9 +2,11 @@ import argparse
 from psf.psf import PSF
 
 def main(file_name, stars_coordinates):
-   graph = PSF(file_name)
-   graph.find_saturated_stars(20, 30)
-
+   text = PSF(file_name, stars_coordinates)
+   coord = (1510,998)
+   text.remove_saturated_objects(galaxy_coord=coord, pixel_size=300,
+                                 condition_saturation=30, exclusion_radius=15,
+                                 plot=True)
 
 
 if __name__ == '__main__':

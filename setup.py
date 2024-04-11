@@ -13,7 +13,7 @@ setup(
     packages=['psf'],
     package_data=package_data,
     scripts=['bin/coordinates', 'bin/createPSF', 'bin/plot_residuals', 'bin/plot_file', 'bin/plot_star',
-             'bin/plot_satureted_stars'],
+             'bin/plot_satureted_stars', 'bin/remove_galaxy_mask'],
     description="Script to create a average psf image",
     author="Vinicius Lourival Bilck",
     author_email="bilck.vinicius1998@gmail.com",
