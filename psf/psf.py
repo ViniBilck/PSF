@@ -106,3 +106,6 @@ class PSF(object):
             axs.imshow(new_data, origin="lower", vmax=0.7)
             plt.show()
         return new_data
+
+    def save_psf(self):
+        fits.writeto("PSF.fits", self.do_norm(plot=False))
